@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const data = await response.json();
-      renderPrompts(data);
+      renderResult(data);
 
     } catch (error) {
 
@@ -109,56 +109,38 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   /* ==============================
-     RENDER PROMPTS
+     RENDER RESULT
   ============================== */
   function renderResult(data) {
 
-  let html = "";
+    let html = "";
 
-  /* IMAGE PROMPT */
-  html += `
-    <div class="scene-block">
-      <div class="scene-title">🖼 GLOBAL IMAGE PROMPT</div>
-      <div class="scene-item">
-        <pre>${data.image_prompt}</pre>
-      </div>
-    </div>
-  `;
-
-  /* VIDEO PROMPTS */
-  data.prompts.forEach(p => {
-
+    /* IMAGE PROMPT */
     html += `
       <div class="scene-block">
-        <div class="scene-title">
-          🎬 VIDEO PROMPT ${p.prompt_number}
-        </div>
+        <div class="scene-title">🖼 GLOBAL IMAGE PROMPT</div>
         <div class="scene-item">
-          <pre>${p.veo_prompt}</pre>
+          <pre>${data.image_prompt}</pre>
         </div>
       </div>
     `;
-  });
 
-  resultBox.innerHTML = html;
-}
+    /* VIDEO PROMPTS */
+    data.prompts.forEach(p => {
 
-    /* COPY PER PROMPT */
-    document.querySelectorAll(".copy-single-btn").forEach(btn => {
-      btn.addEventListener("click", function () {
-
-        const text = decodeURIComponent(this.getAttribute("data-text"));
-
-        navigator.clipboard.writeText(text).then(() => {
-          this.textContent = "Copied!";
-          setTimeout(() => {
-            this.textContent = "Copy Prompt";
-          }, 1500);
-        });
-
-      });
+      html += `
+        <div class="scene-block">
+          <div class="scene-title">
+            🎬 VIDEO PROMPT ${p.prompt_number}
+          </div>
+          <div class="scene-item">
+            <pre>${p.veo_prompt}</pre>
+          </div>
+        </div>
+      `;
     });
 
+    resultBox.innerHTML = html;
   }
 
 });
