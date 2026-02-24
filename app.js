@@ -43,23 +43,37 @@ document.addEventListener("DOMContentLoaded", function () {
         })
       });
 
+      if (!response.ok) {
+        throw new Error("Server error");
+      }
+
       const data = await response.json();
+
+      if (!data || !data.image_prompt || !data.prompts) {
+        throw new Error("Invalid AI response");
+      }
+
       renderResult(data);
 
     } catch (error) {
+
+      console.error(error);
 
       resultBox.innerHTML = `
         <div class="result-placeholder">
           Terjadi error koneksi ke server.
         </div>
       `;
-
     }
 
     button.textContent = "GENERATE CAMPAIGN PROMPT";
     button.disabled = false;
 
   });
+
+  /* ==============================
+     RENDER RESULT
+  ============================== */
 
   function renderResult(data) {
 
@@ -71,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="scene-title">
           🖼 GLOBAL IMAGE PROMPT
         </div>
-        <pre>${data.image_prompt}</pre>
+        <pre class="prompt-text">${escapeHTML(data.image_prompt)}</pre>
         <button class="copy-btn" data-copy="${encodeURIComponent(data.image_prompt)}">
           Copy Image Prompt
         </button>
@@ -86,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="scene-title">
             🎬 VIDEO PROMPT ${p.prompt_number}
           </div>
-          <pre>${p.veo_prompt}</pre>
+          <pre class="prompt-text">${escapeHTML(p.veo_prompt)}</pre>
           <button class="copy-btn" data-copy="${encodeURIComponent(p.veo_prompt)}">
             Copy Video Prompt
           </button>
@@ -96,17 +110,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     resultBox.innerHTML = html;
 
+    /* COPY HANDLER */
     document.querySelectorAll(".copy-btn").forEach(btn => {
       btn.addEventListener("click", function () {
+
         const text = decodeURIComponent(this.getAttribute("data-copy"));
-        navigator.clipboard.writeText(text);
-        this.textContent = "Copied!";
-        setTimeout(() => {
-          this.textContent = "Copy Prompt";
-        }, 1500);
+
+        navigator.clipboard.writeText(text).then(() => {
+          const originalText = this.textContent;
+          this.textContent = "Copied!";
+          setTimeout(() => {
+            this.textContent = originalText;
+          }, 1500);
+        });
+
       });
     });
 
+  }
+
+  /* ==============================
+     ESCAPE HTML (ANTI BUG)
+  ============================== */
+
+  function escapeHTML(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 
 });
