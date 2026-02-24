@@ -12,6 +12,10 @@ export default async function handler(req, res) {
 
     const input = req.body;
 
+    if (!input) {
+      return res.status(400).json({ error: "No input provided" });
+    }
+
     const globalStyle = getGlobalStyle(input.style);
     const systemPrompt = buildSystemPrompt(input);
 
@@ -31,23 +35,32 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      throw new Error("OpenRouter API error");
+      const errText = await response.text();
+      throw new Error("OpenRouter API error: " + errText);
     }
 
     const result = await response.json();
 
-    let rawContent = result.choices?.[0]?.message?.content;
+    let rawContent = result?.choices?.[0]?.message?.content;
 
     if (!rawContent) {
       throw new Error("AI response kosong");
     }
 
+    // Bersihkan markdown kalau ada
     rawContent = rawContent
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
 
-    const aiResult = JSON.parse(rawContent);
+    let aiResult;
+
+    try {
+      aiResult = JSON.parse(rawContent);
+    } catch (err) {
+      console.error("RAW AI RESPONSE:", rawContent);
+      throw new Error("Gagal parse JSON dari AI");
+    }
 
     const finalResult = compileResult(
       aiResult,
@@ -58,6 +71,8 @@ export default async function handler(req, res) {
     return res.status(200).json(finalResult);
 
   } catch (error) {
+
+    console.error("SERVER ERROR:", error);
 
     return res.status(500).json({
       error: "Server error",
