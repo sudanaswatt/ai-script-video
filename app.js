@@ -2,49 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const button = document.querySelector(".generate-btn");
   const resultBox = document.getElementById("resultBox");
-  const upload = document.getElementById("imageUpload");
-  const previewContainer = document.getElementById("previewContainer");
-  const uploadContent = document.getElementById("uploadContent");
 
   if (!button || !resultBox) return;
 
-  let uploadedImages = [];
-
-  /* ==============================
-     IMAGE UPLOAD
-  ============================== */
-  if (upload) {
-    upload.addEventListener("change", function () {
-
-      uploadedImages = Array.from(upload.files).slice(0, 5);
-      previewContainer.innerHTML = "";
-
-      if (uploadedImages.length === 0) {
-        previewContainer.classList.add("hidden");
-        uploadContent.classList.remove("hidden");
-        return;
-      }
-
-      previewContainer.classList.remove("hidden");
-      uploadContent.classList.add("hidden");
-
-      uploadedImages.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = document.createElement("img");
-          img.src = e.target.result;
-          img.classList.add("preview-img");
-          previewContainer.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      });
-
-    });
-  }
-
-  /* ==============================
-     GENERATE
-  ============================== */
   button.addEventListener("click", async function () {
 
     const product = document.getElementById("product")?.value.trim();
@@ -53,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const objectVisual = document.getElementById("objectVisual")?.value.trim();
     const style = document.getElementById("style")?.value;
     const promptCount = parseInt(document.getElementById("promptCount")?.value || 1);
-    const overlayEnabled = document.getElementById("textOverlay")?.checked;
 
     if (!product) {
       alert("Nama produk wajib diisi.");
@@ -80,37 +39,28 @@ document.addEventListener("DOMContentLoaded", function () {
           product,
           advantage,
           audience,
-          objectVisual,
-          overlayEnabled
+          objectVisual
         })
       });
-
-      if (!response.ok) {
-        throw new Error("Server error");
-      }
 
       const data = await response.json();
       renderResult(data);
 
     } catch (error) {
 
-      console.error(error);
-
       resultBox.innerHTML = `
         <div class="result-placeholder">
           Terjadi error koneksi ke server.
         </div>
       `;
+
     }
 
-    button.textContent = "GENERATE SCRIPT OTOMATIS";
+    button.textContent = "GENERATE CAMPAIGN PROMPT";
     button.disabled = false;
 
   });
 
-  /* ==============================
-     RENDER RESULT
-  ============================== */
   function renderResult(data) {
 
     let html = "";
@@ -118,10 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
     /* IMAGE PROMPT */
     html += `
       <div class="scene-block">
-        <div class="scene-title">🖼 GLOBAL IMAGE PROMPT</div>
-        <div class="scene-item">
-          <pre>${data.image_prompt}</pre>
+        <div class="scene-title">
+          🖼 GLOBAL IMAGE PROMPT
         </div>
+        <pre>${data.image_prompt}</pre>
+        <button class="copy-btn" data-copy="${encodeURIComponent(data.image_prompt)}">
+          Copy Image Prompt
+        </button>
       </div>
     `;
 
@@ -133,14 +86,27 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="scene-title">
             🎬 VIDEO PROMPT ${p.prompt_number}
           </div>
-          <div class="scene-item">
-            <pre>${p.veo_prompt}</pre>
-          </div>
+          <pre>${p.veo_prompt}</pre>
+          <button class="copy-btn" data-copy="${encodeURIComponent(p.veo_prompt)}">
+            Copy Video Prompt
+          </button>
         </div>
       `;
     });
 
     resultBox.innerHTML = html;
+
+    document.querySelectorAll(".copy-btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const text = decodeURIComponent(this.getAttribute("data-copy"));
+        navigator.clipboard.writeText(text);
+        this.textContent = "Copied!";
+        setTimeout(() => {
+          this.textContent = "Copy Prompt";
+        }, 1500);
+      });
+    });
+
   }
 
 });
