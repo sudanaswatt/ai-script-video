@@ -82,8 +82,6 @@ label {
   margin-bottom: 6px;
 }
 
-/* INPUT & TEXTAREA */
-
 input,
 select,
 textarea {
@@ -111,129 +109,6 @@ textarea::placeholder {
 }
 
 /* ==============================
-   UPLOAD STYLE SAFIR STYLE
-============================== */
-
-.upload-area {
-  border: 4px dashed #7fd0ae;
-  border-radius: 28px;
-  padding: 40px 20px;
-  background: #dff3ea;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  transition: 0.2s ease;
-}
-
-.upload-area:hover {
-  background: #d2efe4;
-}
-
-.upload-area input {
-  display: none;
-}
-
-.upload-content {
-  pointer-events: none;
-}
-
-.upload-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
-}
-
-.upload-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.upload-subtitle {
-  font-size: 14px;
-  color: #5d8f7e;
-}
-
-/* Preview mode */
-
-.preview-container {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.preview-container img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 3px solid #134b3c;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-}
-
-.hidden {
-  display: none;
-}
-
-/* ==============================
-   ELEMENT SCRIPT FIX
-============================== */
-
-.element-card {
-  background: #eef6f2;
-  border: 3px solid #bfe8d4;
-  border-radius: 26px;
-  padding: 18px;
-}
-
-.checkbox-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.checkbox-item:last-child {
-  margin-bottom: 0;
-}
-
-/* Custom checkbox style */
-
-.checkbox-item input[type="checkbox"] {
-  width: 22px;
-  height: 22px;
-  accent-color: #134b3c;
-  cursor: pointer;
-}
-
-.checkbox-item label {
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
-/* ==============================
-   SLIDER
-============================== */
-
-.scene-control {
-  background: #eef6f2;
-  border-radius: 24px;
-  padding: 16px;
-  border: 3px solid #bfe8d4;
-}
-
-.scene-display {
-  text-align: right;
-  font-weight: 700;
-  margin-top: 10px;
-  font-size: 15px;
-}
-
-input[type="range"] {
-  width: 100%;
-}
-
-/* ==============================
    BUTTON
 ============================== */
 
@@ -257,7 +132,7 @@ input[type="range"] {
 }
 
 /* ==============================
-   RESULT SECTION FINAL
+   RESULT SECTION
 ============================== */
 
 .result-header {
@@ -270,21 +145,6 @@ input[type="range"] {
 .result-title {
   font-weight: 800;
   font-size: 18px;
-}
-
-.copy-btn {
-  background: #cfeadf;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  color: #134b3c;
-  transition: 0.2s ease;
-}
-
-.copy-btn:hover {
-  background: #b8e0d1;
 }
 
 .result-box {
@@ -313,7 +173,7 @@ input[type="range"] {
 }
 
 /* ==============================
-   SCENE STYLE
+   SCENE BLOCK
 ============================== */
 
 .scene-block {
@@ -334,14 +194,40 @@ input[type="range"] {
   letter-spacing: 0.5px;
 }
 
-.scene-item {
-  font-size: 14px;
-  line-height: 1.7;
-  margin-bottom: 10px;
+/* ==============================
+   PROMPT TEXT FIX (PENTING)
+============================== */
+
+.scene-block pre {
+  white-space: pre-wrap;        /* tetap jaga line break */
+  word-wrap: break-word;        /* paksa potong kata panjang */
+  overflow-wrap: break-word;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  background: #eef6f2;
+  padding: 16px;
+  border-radius: 18px;
+  border: 2px solid #d5e9e0;
+  margin-bottom: 14px;
+  color: #134b3c;
 }
 
-.placeholder {
-  opacity: 0.6;
-  font-size: 14px;
+/* ==============================
+   COPY BUTTON
+============================== */
+
+.copy-btn {
+  background: #cfeadf;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #134b3c;
+  transition: 0.2s ease;
 }
 
+.copy-btn:hover {
+  background: #b8e0d1;
+}
