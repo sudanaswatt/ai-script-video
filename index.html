@@ -16,7 +16,7 @@
   <div class="header">
     <div class="logo">🎬</div>
     <h1>AI CAMPAIGN PROMPT BUILDER</h1>
-    <p>Buat Karakter Sekali, Gunakan untuk Banyak Video</p>
+    <p>Buat 1 Karakter Konsisten untuk Banyak Video 6 Detik</p>
   </div>
 
   <!-- FORM -->
@@ -27,18 +27,18 @@
     <!-- Produk -->
     <div class="form-group">
       <label>1. Nama Produk / Topik</label>
-      <input id="product" placeholder="Contoh: Serum Glowing" />
+      <input id="product" placeholder="Contoh: Kaos Cooling Premium" />
     </div>
 
     <!-- Keunggulan -->
     <div class="form-group">
-      <label>2. Keunggulan / Deskripsi</label>
-      <textarea id="advantage" placeholder="Contoh: Mengandung niacinamide 10%, cepat meresap..."></textarea>
+      <label>2. Keunggulan / Deskripsi Produk</label>
+      <textarea id="advantage" placeholder="Contoh: Adem, menyerap keringat, nyaman dipakai seharian..."></textarea>
     </div>
 
     <!-- Karakter -->
     <div class="form-group">
-      <label>3. Karakter</label>
+      <label>3. Karakter Utama</label>
       <select id="audience">
         <option value="Pria Remaja">Pria Remaja</option>
         <option value="Wanita Remaja">Wanita Remaja</option>
@@ -49,15 +49,15 @@
       </select>
     </div>
 
-    <!-- Objek Visual -->
+    <!-- Lokasi -->
     <div class="form-group">
-      <label>4. Objek Visual / Lokasi</label>
-      <input id="objectVisual" placeholder="Contoh: kamar aesthetic, meja kayu, taman sore hari" />
+      <label>4. Lokasi / Environment (Akan Dikunci)</label>
+      <input id="objectVisual" placeholder="Contoh: kamar minimalis dengan jendela besar dan cahaya sore hangat" />
     </div>
 
     <!-- Style -->
     <div class="form-group">
-      <label>5. Gaya Visual</label>
+      <label>5. Gaya Visual Campaign</label>
       <select id="style">
         <option value="Cinematic">Cinematic</option>
         <option value="Luxury">Luxury</option>
@@ -70,12 +70,12 @@
 
     <!-- Jumlah Prompt -->
     <div class="form-group">
-      <label>6. Jumlah Prompt (6 detik per prompt)</label>
+      <label>6. Jumlah Video Prompt (6 detik per video)</label>
       <select id="promptCount">
-        <option value="1">1 Prompt</option>
-        <option value="2">2 Prompt</option>
-        <option value="3">3 Prompt</option>
-        <option value="4">4 Prompt</option>
+        <option value="1">1 Video</option>
+        <option value="2">2 Video</option>
+        <option value="3">3 Video</option>
+        <option value="4">4 Video</option>
       </select>
     </div>
 
@@ -96,13 +96,13 @@
 
     <div id="resultBox" class="result-box">
       <div class="result-placeholder">
-        Isi detail lalu klik Generate.
+        Isi detail produk lalu klik Generate.
       </div>
     </div>
 
     <div class="info-box">
-      🔥 STEP 1: Copy GLOBAL IMAGE PROMPT → Generate gambar di GPT Image.  
-      🔥 STEP 2: Upload gambar tersebut ke Veo/Kling → Gunakan VIDEO PROMPT.
+      🔥 STEP 1: Copy <b>GLOBAL IMAGE PROMPT</b> → Generate gambar karakter di GPT Image. <br><br>
+      🔥 STEP 2: Upload gambar tersebut ke Veo / Kling → Gunakan <b>VIDEO PROMPT</b> untuk tiap adegan 6 detik.
     </div>
 
   </div>
