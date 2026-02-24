@@ -162,51 +162,46 @@ document.addEventListener("DOMContentLoaded", function () {
   ============================== */
   function renderResult(data) {
 
-    if (!data) return;
+  if (!data) return;
 
-    const global = data.global_context || {};
-    const scenes = data.scenes || [];
+  const global = data.global_context || {};
+  const style = data.global_style || {};
+  const scenes = data.scenes || [];
 
-    let html = `
+  let html = "";
+
+  scenes.forEach(scene => {
+
+    html += `
       <div class="scene-block">
-        <div class="scene-title">GLOBAL CONTEXT</div>
+        <div class="scene-title">
+          SCENE ${scene.scene_number} (${scene.type})
+        </div>
+
+        <div class="scene-item"><b>Aspect Ratio:</b> ${style.aspect_ratio || "-"}</div>
+        <div class="scene-item"><b>Lighting:</b> ${style.lighting || "-"}</div>
+        <div class="scene-item"><b>Color Tone:</b> ${style.color_tone || "-"}</div>
+        <div class="scene-item"><b>Camera Style:</b> ${style.camera_style || "-"}</div>
+
+        <hr style="margin:10px 0; opacity:0.2;" />
+
         <div class="scene-item"><b>Character:</b> ${global.character || "-"}</div>
         <div class="scene-item"><b>Outfit:</b> ${global.outfit || "-"}</div>
         <div class="scene-item"><b>Location:</b> ${global.location || "-"}</div>
         <div class="scene-item"><b>Time:</b> ${global.time_of_day || "-"}</div>
         <div class="scene-item"><b>Mood:</b> ${global.mood || "-"}</div>
+
+        <hr style="margin:10px 0; opacity:0.2;" />
+
+        <div class="scene-item"><b>Camera Variation:</b> ${scene.camera_variation || "-"}</div>
+        <div class="scene-item"><b>Visual Action:</b> ${scene.visual_action || "-"}</div>
+        <div class="scene-item"><b>Voice Over:</b> "${scene.voice_over || "-"}"</div>
+
+        ${scene.text_overlay ? `
+        <div class="scene-item"><b>Teks Overlay:</b> "${scene.text_overlay}"</div>` : ""}
       </div>
     `;
+  });
 
-    scenes.forEach(scene => {
-
-      html += `
-        <div class="scene-block">
-          <div class="scene-title">
-            SCENE ${scene.scene_number} (${scene.type})
-          </div>
-
-          <div class="scene-item">
-            <b>Camera:</b> ${scene.camera_variation || "-"}
-          </div>
-
-          <div class="scene-item">
-            <b>Visual:</b> ${scene.visual_action || "-"}
-          </div>
-
-          <div class="scene-item">
-            <b>Voice Over:</b> "${scene.voice_over || "-"}"
-          </div>
-
-          ${scene.text_overlay ? `
-          <div class="scene-item">
-            <b>Teks Overlay:</b> "${scene.text_overlay}"
-          </div>` : ""}
-        </div>
-      `;
-    });
-
-    resultBox.innerHTML = html;
-  }
-
-});
+  resultBox.innerHTML = html;
+}
