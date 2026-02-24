@@ -1,1 +1,347 @@
+/* ==============================
+   GLOBAL
+============================== */
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #bfe8d4, #9fd5c0);
+  color: #134b3c;
+}
+
+.wrapper {
+  max-width: 500px;
+  margin: auto;
+  padding: 25px 16px 60px;
+}
+
+/* ==============================
+   HEADER
+============================== */
+
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header .logo {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.header p {
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* ==============================
+   CARD
+============================== */
+
+.card {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 24px;
+  margin-bottom: 25px;
+  border: 4px solid #134b3c;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ==============================
+   SECTION TITLE
+============================== */
+
+.section-title {
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 18px;
+  border-bottom: 4px solid #bfe8d4;
+  padding-bottom: 10px;
+}
+
+/* ==============================
+   FORM
+============================== */
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* INPUT & TEXTAREA */
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 16px;
+  border-radius: 22px;
+  border: 3px solid #bfe8d4;
+  background: #eef6f2;
+  font-size: 14px;
+  font-weight: 500;
+  color: #134b3c;
+  outline: none;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6c9f8f;
+}
+
+/* ==============================
+   UPLOAD STYLE SAFIR STYLE
+============================== */
+
+.upload-area {
+  border: 4px dashed #7fd0ae;
+  border-radius: 28px;
+  padding: 40px 20px;
+  background: #dff3ea;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: 0.2s ease;
+}
+
+.upload-area:hover {
+  background: #d2efe4;
+}
+
+.upload-area input {
+  display: none;
+}
+
+.upload-content {
+  pointer-events: none;
+}
+
+.upload-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.upload-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.upload-subtitle {
+  font-size: 14px;
+  color: #5d8f7e;
+}
+
+/* Preview mode */
+
+.preview-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.preview-container img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 3px solid #134b3c;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+.hidden {
+  display: none;
+}
+
+/* ==============================
+   ELEMENT SCRIPT FIX
+============================== */
+
+.element-card {
+  background: #eef6f2;
+  border: 3px solid #bfe8d4;
+  border-radius: 26px;
+  padding: 18px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.checkbox-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Custom checkbox style */
+
+.checkbox-item input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: #134b3c;
+  cursor: pointer;
+}
+
+.checkbox-item label {
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+/* ==============================
+   SLIDER
+============================== */
+
+.scene-control {
+  background: #eef6f2;
+  border-radius: 24px;
+  padding: 16px;
+  border: 3px solid #bfe8d4;
+}
+
+.scene-display {
+  text-align: right;
+  font-weight: 700;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+/* ==============================
+   BUTTON
+============================== */
+
+.generate-btn {
+  width: 100%;
+  padding: 18px;
+  border-radius: 28px;
+  border: none;
+  background: #134b3c;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: 0.2s ease;
+}
+
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ==============================
+   RESULT SECTION FINAL
+============================== */
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.result-title {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.copy-btn {
+  background: #cfeadf;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #134b3c;
+  transition: 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: #b8e0d1;
+}
+
+.result-box {
+  background: #f4f6f5;
+  border-radius: 24px;
+  padding: 24px;
+  min-height: 160px;
+  border: 3px solid #e4e7e6;
+  margin-bottom: 18px;
+}
+
+.result-placeholder {
+  text-align: center;
+  font-size: 14px;
+  color: #8a8f8d;
+  line-height: 1.7;
+}
+
+.info-box {
+  background: #fff3cd;
+  border: 3px solid #f1d889;
+  border-radius: 22px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ==============================
+   SCENE STYLE
+============================== */
+
+.scene-block {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 18px;
+  margin-bottom: 28px;
+  border: 2px solid #d5e9e0;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.scene-title {
+  font-weight: 800;
+  font-size: 15px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e7f2ec;
+  letter-spacing: 0.5px;
+}
+
+.scene-item {
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.placeholder {
+  opacity: 0.6;
+  font-size: 14px;
+}
 
