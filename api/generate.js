@@ -26,26 +26,40 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "openai/gpt-4o-mini",
+        temperature: 0.4, // 🔥 LEBIH STABIL
         messages: [
-          { role: "system", content: systemPrompt }
-        ],
-        temperature: 0.7
+          {
+            role: "system",
+            content: systemPrompt
+          }
+        ]
       })
     });
 
+    if (!response.ok) {
+      throw new Error("OpenRouter API error");
+    }
+
     const result = await response.json();
 
-    const rawContent = result.choices?.[0]?.message?.content;
+    let rawContent = result.choices?.[0]?.message?.content;
 
     if (!rawContent) {
       throw new Error("AI response kosong");
     }
+
+    // 🔥 Bersihkan jika AI masih kirim markdown
+    rawContent = rawContent
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
 
     let aiResult;
 
     try {
       aiResult = JSON.parse(rawContent);
     } catch (err) {
+      console.error("RAW AI RESPONSE:", rawContent);
       throw new Error("Gagal parse JSON dari AI");
     }
 
@@ -58,6 +72,8 @@ export default async function handler(req, res) {
     return res.status(200).json(finalResult);
 
   } catch (error) {
+
+    console.error("SERVER ERROR:", error);
 
     return res.status(500).json({
       error: "Server error",
