@@ -2,7 +2,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const button = document.querySelector(".generate-btn");
   const resultBox = document.getElementById("resultBox");
+  const templateBtn = document.getElementById("openTemplateLibrary");
 
+if (templateBtn) {
+  templateBtn.addEventListener("click", function () {
+    window.location.href = "templates.html";
+  });
+}
   if (!button || !resultBox) return;
 
   button.addEventListener("click", async function () {
