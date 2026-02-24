@@ -111,38 +111,37 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ==============================
      RENDER PROMPTS
   ============================== */
-  function renderPrompts(data) {
+  function renderResult(data) {
 
-    if (!data.prompts || data.prompts.length === 0) {
-      resultBox.innerHTML = "<div class='result-placeholder'>Tidak ada hasil.</div>";
-      return;
-    }
+  let html = "";
 
-    let html = "";
+  /* IMAGE PROMPT */
+  html += `
+    <div class="scene-block">
+      <div class="scene-title">🖼 GLOBAL IMAGE PROMPT</div>
+      <div class="scene-item">
+        <pre>${data.image_prompt}</pre>
+      </div>
+    </div>
+  `;
 
-    data.prompts.forEach(item => {
+  /* VIDEO PROMPTS */
+  data.prompts.forEach(p => {
 
-      html += `
-        <div class="scene-block">
-
-          <div class="scene-title">
-            PROMPT ${item.prompt_number} (6 DETIK)
-          </div>
-
-          <div class="scene-item" style="white-space: pre-line;">
-            ${item.veo_prompt}
-          </div>
-
-          <button class="copy-single-btn" data-text="${encodeURIComponent(item.veo_prompt)}">
-            Copy Prompt
-          </button>
-
+    html += `
+      <div class="scene-block">
+        <div class="scene-title">
+          🎬 VIDEO PROMPT ${p.prompt_number}
         </div>
-      `;
+        <div class="scene-item">
+          <pre>${p.veo_prompt}</pre>
+        </div>
+      </div>
+    `;
+  });
 
-    });
-
-    resultBox.innerHTML = html;
+  resultBox.innerHTML = html;
+}
 
     /* COPY PER PROMPT */
     document.querySelectorAll(".copy-single-btn").forEach(btn => {
