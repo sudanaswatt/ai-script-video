@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  const TOTAL_DURATION = 6; // FIX 6 DETIK
-
   const button = document.querySelector(".generate-btn");
   const resultBox = document.getElementById("resultBox");
   const sceneSlider = document.getElementById("sceneCount");
@@ -64,131 +62,103 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* ==============================
-     GENERATE SCRIPT
+     GENERATE SCRIPT (CALL API)
   ============================== */
   button.addEventListener("click", async function () {
 
-  const product = document.getElementById("product").value.trim();
-  const advantage = document.getElementById("advantage").value.trim();
-  const audience = document.getElementById("audience").value;
-  const objectVisual = document.getElementById("objectVisual").value.trim();
-  const style = document.getElementById("style").value;
-  const totalScene = parseInt(sceneSlider.value);
-  const overlayEnabled = document.getElementById("textOverlay").checked;
+    const product = document.getElementById("product").value.trim();
+    const advantage = document.getElementById("advantage").value.trim();
+    const audience = document.getElementById("audience").value;
+    const objectVisual = document.getElementById("objectVisual").value.trim();
+    const style = document.getElementById("style").value;
+    const totalScene = parseInt(sceneSlider.value);
+    const overlayEnabled = document.getElementById("textOverlay").checked;
 
-  if (!product) {
-    alert("Nama produk wajib diisi.");
-    return;
-  }
+    if (!product) {
+      alert("Nama produk wajib diisi.");
+      return;
+    }
 
-  button.textContent = "Generating...";
-  button.disabled = true;
-
-  resultBox.innerHTML = `
-    <div class="result-placeholder">
-      Menghubungkan ke AI engine...
-    </div>
-  `;
-
-  try {
-
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        style: style,
-        sceneCount: totalScene,
-        product: product,
-        advantage: advantage,
-        audience: audience,
-        objectVisual: objectVisual,
-        overlayEnabled: overlayEnabled
-      })
-    });
-
-    const data = await response.json();
-
-    renderResult(data);
-
-  } catch (error) {
+    button.textContent = "Generating...";
+    button.disabled = true;
 
     resultBox.innerHTML = `
       <div class="result-placeholder">
-        Terjadi error koneksi ke server.
+        Menghubungkan ke AI engine...
       </div>
     `;
 
-  }
+    try {
 
-  button.textContent = "GENERATE SCRIPT OTOMATIS";
-  button.disabled = false;
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          style: style,
+          sceneCount: totalScene,
+          product: product,
+          advantage: advantage,
+          audience: audience,
+          objectVisual: objectVisual,
+          overlayEnabled: overlayEnabled
+        })
+      });
 
-});
-        /* SCENE TYPE */
-        if (i === 1) type = "HOOK";
-        else if (i === totalScene) type = "CTA";
-        else type = "SOLUSI";
-
-        /* TIMING */
-        const startTime = ((i - 1) * durationPerScene).toFixed(1);
-        const endTime = (i * durationPerScene).toFixed(1);
-
-        /* VISUAL */
-        if (hasImage) {
-          visual = `Gunakan gambar referensi ke-${i}, tampilkan ${objectVisual || product} dengan gaya ${style}.`;
-        } else {
-          visual = `${audience} berinteraksi dengan ${product}, fokus pada ${objectVisual || product}, gaya ${style}.`;
-        }
-
-        /* VOICE */
-        if (type === "HOOK") {
-          voice = `Pernah dengar tentang ${product}?`;
-        }
-        else if (type === "SOLUSI") {
-          voice = advantage
-            ? `${product} punya keunggulan: ${advantage}.`
-            : `${product} membantu dengan cara yang efektif dan praktis.`;
-        }
-        else {
-          voice = `Yuk coba ${product} sekarang juga!`;
-        }
-
-        /* OVERLAY */
-        if (overlayEnabled) {
-          if (type === "HOOK") overlay = "Masalah umum yang sering terjadi!";
-          else if (type === "SOLUSI") overlay = "Keunggulan utama produk";
-          else overlay = "Coba sekarang sebelum kehabisan!";
-        }
-
-        html += `
-          <div class="scene-block">
-            <div class="scene-title">
-              SCENE ${i} (${type}) — ${startTime}s - ${endTime}s
-            </div>
-
-            <div class="scene-item">
-              <b>Visual:</b> ${visual}
-            </div>
-
-            <div class="scene-item">
-              <b>Voice Over:</b> "${voice}"
-            </div>
-
-            ${overlayEnabled ? `
-            <div class="scene-item">
-              <b>Teks Overlay:</b> "${overlay}"
-            </div>` : ""}
-          </div>
-        `;
+      if (!response.ok) {
+        throw new Error("Server error");
       }
 
-      resultBox.innerHTML = html;
+      const data = await response.json();
 
-      button.textContent = "GENERATE SCRIPT OTOMATIS";
-      button.disabled = false;
+      renderResult(data);
 
-    }, 1000);
+    } catch (error) {
+
+      resultBox.innerHTML = `
+        <div class="result-placeholder">
+          Terjadi error koneksi ke server.
+        </div>
+      `;
+
+    }
+
+    button.textContent = "GENERATE SCRIPT OTOMATIS";
+    button.disabled = false;
 
   });
+
+  /* ==============================
+     RENDER RESULT
+  ============================== */
+  function renderResult(data) {
+
+    let html = "";
+
+    data.scenes.forEach(scene => {
+
+      html += `
+        <div class="scene-block">
+          <div class="scene-title">
+            SCENE ${scene.scene_number} (${scene.type})
+          </div>
+
+          <div class="scene-item">
+            <b>Visual:</b> ${scene.visual_action}
+          </div>
+
+          <div class="scene-item">
+            <b>Voice Over:</b> "${scene.voice_over}"
+          </div>
+
+          ${scene.text_overlay ? `
+          <div class="scene-item">
+            <b>Teks Overlay:</b> "${scene.text_overlay}"
+          </div>` : ""}
+        </div>
+      `;
+    });
+
+    resultBox.innerHTML = html;
+  }
 
 });
