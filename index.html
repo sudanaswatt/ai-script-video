@@ -25,23 +25,30 @@
     <div class="section-title">⚙ Spesifikasi Konten</div>
 
     <!-- 1 Upload -->
-   <div class="form-group">
-  <label>1. Upload Referensi Gambar</label>
+    <div class="form-group">
+      <label>1. Upload Referensi Gambar</label>
 
-  <label class="upload-area">
-    <input type="file" id="imageUpload" accept="image/*" multiple />
+      <label class="upload-area">
+        <input 
+          type="file" 
+          id="imageUpload" 
+          accept="image/*" 
+          multiple 
+          hidden
+        />
 
-    <div id="uploadContent" class="upload-content">
-      <div class="upload-icon">🖼️</div>
-      <div class="upload-title">Klik / Drag & Drop di sini</div>
-      <div class="upload-subtitle">
-        Bisa pilih hingga 5 gambar sekaligus
-      </div>
+        <div id="uploadContent" class="upload-content">
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-title">Klik untuk pilih gambar</div>
+          <div class="upload-subtitle">
+            Bisa pilih hingga 5 gambar sekaligus
+          </div>
+        </div>
+
+        <div id="previewContainer" class="preview-container hidden"></div>
+      </label>
     </div>
 
-    <div id="previewContainer" class="preview-container hidden"></div>
-  </label>
-</div>
     <!-- 2 Nama Produk -->
     <div class="form-group">
       <label>2. Nama Produk / Topik</label>
@@ -56,7 +63,7 @@
 
     <!-- 4 Target Audience -->
     <div class="form-group">
-      <label>4. Target Audience</label>
+      <label>4. Karakter/Target Audience</label>
       <select id="audience">
         <option value="Remaja">Remaja</option>
         <option value="Mahasiswa">Mahasiswa</option>
@@ -77,19 +84,20 @@
     <div class="form-group">
       <label>6. Element Script</label>
 
-     <div class="element-card">
+      <div class="element-card">
 
-  <div class="checkbox-item">
-    <input type="checkbox" id="voiceOver" checked disabled />
-    <label for="voiceOver">Voice Over (Wajib)</label>
-  </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="voiceOver" checked disabled />
+          <label for="voiceOver">Voice Over (Wajib)</label>
+        </div>
 
-  <div class="checkbox-item">
-    <input type="checkbox" id="textOverlay" />
-    <label for="textOverlay">Teks Overlay (Opsional)</label>
-  </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="textOverlay" />
+          <label for="textOverlay">Teks Overlay (Opsional)</label>
+        </div>
 
-</div>
+      </div>
+    </div>
 
     <!-- 7 Gaya Visual -->
     <div class="form-group">
@@ -104,7 +112,7 @@
       </select>
     </div>
 
-    <!-- Jumlah Scene -->
+    <!-- 8 Jumlah Scene -->
     <div class="form-group">
       <label>8. Jumlah Scene</label>
 
@@ -123,32 +131,27 @@
   </div>
 
   <!-- RESULT CARD -->
- <div class="card">
+  <div class="card">
 
-  <div class="result-header">
-    <div class="result-title">
-      📄 Hasil Skrip Profesional
+    <div class="result-header">
+      <div class="result-title">
+        📄 Hasil Skrip Profesional
+      </div>
+
+      <button id="copyButton" class="copy-btn">
+        Copy
+      </button>
     </div>
 
-    <button id="copyButton" class="copy-btn">
-      Copy
-    </button>
-  </div>
-
-  <div id="resultBox" class="result-box">
-    <div class="result-placeholder">
-      Silakan isi detail produk di samping dan klik Generate.
-      <br><br>
-      Hasil skrip dengan <b>Visual</b> dan <b>Voice Over</b> akan muncul di sini.
+    <div id="resultBox" class="result-box">
+      <div class="result-placeholder">
+        Silakan isi detail produk dan klik Generate.
+      </div>
     </div>
-  </div>
 
-  <div class="info-box">
-    💡 <b>Info:</b> Skrip ini fokus pada <b>Visual</b> dan 
-    <b>Voice Over</b>. Teks Overlay hanya muncul jika Anda mencentang opsinya.
-  </div>
-
-</div>
+    <div class="info-box">
+      💡 Skrip ini fokus pada Visual dan Voice Over.
+    </div>
 
   </div>
 
