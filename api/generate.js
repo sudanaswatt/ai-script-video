@@ -18,36 +18,36 @@ export default async function handler(req, res) {
 
     const systemPrompt = buildSystemPrompt(input);
 
-    // ==========================
-    // DUMMY AI RESPONSE DINAMIS
-    // ==========================
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPrompt }
+        ],
+        temperature: 0.7
+      })
+    });
 
-    const aiResult = {
-      scene_count: durationConfig.scene_count,
-      scenes: Array.from(
-        { length: durationConfig.scene_count },
-        (_, i) => ({
-          scene_number: i + 1,
-          type:
-            i === 0
-              ? "hook"
-              : i === durationConfig.scene_count - 1
-              ? "cta"
-              : "solusi",
-          camera_variation:
-            i === 0
-              ? "close up"
-              : i === durationConfig.scene_count - 1
-              ? "medium shot"
-              : "wide shot",
-          visual_action: "Karakter melakukan aksi sesuai produk",
-          voice_over: "Contoh voice over singkat.",
-          text_overlay: input.overlayEnabled
-            ? "Contoh overlay"
-            : ""
-        })
-      )
-    };
+    const result = await response.json();
+
+    const rawContent = result.choices?.[0]?.message?.content;
+
+    if (!rawContent) {
+      throw new Error("AI response kosong");
+    }
+
+    let aiResult;
+
+    try {
+      aiResult = JSON.parse(rawContent);
+    } catch (err) {
+      throw new Error("Gagal parse JSON dari AI");
+    }
 
     const finalResult = compileResult(
       aiResult,
@@ -58,9 +58,11 @@ export default async function handler(req, res) {
     return res.status(200).json(finalResult);
 
   } catch (error) {
+
     return res.status(500).json({
       error: "Server error",
       detail: error.message
     });
+
   }
 }
