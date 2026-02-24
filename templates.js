@@ -59,19 +59,44 @@ function renderTemplates(category) {
 
   const templates = templateLibrary[category];
 
-  templates.forEach(t => {
+  templates.forEach((t, index) => {
 
     container.innerHTML += `
-      <div class="card">
+      <div class="card template-card">
         <div class="section-title">${t.title}</div>
-        <pre>${t.prompt}</pre>
-        <button class="generate-btn copy-btn" data-copy="${encodeURIComponent(t.prompt)}">
-          COPY PROMPT
-        </button>
+
+        <div class="template-content collapsed" id="content-${index}">
+          ${t.prompt}
+        </div>
+
+        <div class="template-actions">
+          <button class="secondary-btn toggle-btn" data-id="${index}">
+            Lihat Selengkapnya
+          </button>
+
+          <button class="generate-btn copy-btn" data-copy="${encodeURIComponent(t.prompt)}">
+            COPY PROMPT
+          </button>
+        </div>
       </div>
     `;
   });
 
+  // Toggle expand
+  document.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const id = this.dataset.id;
+      const content = document.getElementById(`content-${id}`);
+
+      content.classList.toggle("collapsed");
+
+      this.textContent = content.classList.contains("collapsed")
+        ? "Lihat Selengkapnya"
+        : "Tutup";
+    });
+  });
+
+  // Copy button
   document.querySelectorAll(".copy-btn").forEach(btn => {
     btn.addEventListener("click", function () {
       const text = decodeURIComponent(this.dataset.copy);
