@@ -2,25 +2,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const button = document.querySelector(".generate-btn");
   const resultBox = document.getElementById("resultBox");
-  const sceneSlider = document.getElementById("sceneCount");
-  const sceneNumber = document.getElementById("sceneNumber");
   const upload = document.getElementById("imageUpload");
   const previewContainer = document.getElementById("previewContainer");
   const uploadContent = document.getElementById("uploadContent");
-  const copyButton = document.getElementById("copyButton");
-
-  let uploadedImages = [];
 
   if (!button || !resultBox) return;
 
-  /* SLIDER */
-  if (sceneSlider && sceneNumber) {
-    sceneSlider.addEventListener("input", function () {
-      sceneNumber.textContent = sceneSlider.value;
-    });
-  }
+  let uploadedImages = [];
 
-  /* IMAGE UPLOAD */
+  /* ==============================
+     IMAGE UPLOAD
+  ============================== */
   if (upload) {
     upload.addEventListener("change", function () {
 
@@ -50,22 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* COPY */
-  if (copyButton) {
-    copyButton.addEventListener("click", function () {
-      if (!resultBox.innerText.trim()) return;
-
-      navigator.clipboard.writeText(resultBox.innerText)
-        .then(() => {
-          copyButton.textContent = "Copied!";
-          setTimeout(() => {
-            copyButton.textContent = "Copy";
-          }, 1500);
-        });
-    });
-  }
-
-  /* GENERATE */
+  /* ==============================
+     GENERATE
+  ============================== */
   button.addEventListener("click", async function () {
 
     const product = document.getElementById("product")?.value.trim();
@@ -73,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const audience = document.getElementById("audience")?.value;
     const objectVisual = document.getElementById("objectVisual")?.value.trim();
     const style = document.getElementById("style")?.value;
-    const totalScene = parseInt(sceneSlider?.value || 3);
+    const promptCount = parseInt(document.getElementById("promptCount")?.value || 1);
     const overlayEnabled = document.getElementById("textOverlay")?.checked;
 
     if (!product) {
@@ -97,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           style,
-          sceneCount: totalScene,
+          promptCount,
           product,
           advantage,
           audience,
@@ -111,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const data = await response.json();
-      renderResult(data);
+      renderPrompts(data);
 
     } catch (error) {
 
@@ -129,49 +108,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
   });
 
-  /* RENDER */
-  function renderResult(data) {
+  /* ==============================
+     RENDER PROMPTS
+  ============================== */
+  function renderPrompts(data) {
 
-    const global = data.global_context || {};
-    const style = data.global_style || {};
-    const scenes = data.scenes || [];
+    if (!data.prompts || data.prompts.length === 0) {
+      resultBox.innerHTML = "<div class='result-placeholder'>Tidak ada hasil.</div>";
+      return;
+    }
 
     let html = "";
 
-    scenes.forEach(scene => {
+    data.prompts.forEach(item => {
 
       html += `
         <div class="scene-block">
+
           <div class="scene-title">
-            SCENE ${scene.scene_number} (${scene.type})
+            PROMPT ${item.prompt_number} (6 DETIK)
           </div>
 
-          <div class="scene-item"><b>Aspect Ratio:</b> ${style.aspect_ratio || "-"}</div>
-          <div class="scene-item"><b>Lighting:</b> ${style.lighting || "-"}</div>
-          <div class="scene-item"><b>Color Tone:</b> ${style.color_tone || "-"}</div>
-          <div class="scene-item"><b>Camera Style:</b> ${style.camera_style || "-"}</div>
+          <div class="scene-item" style="white-space: pre-line;">
+            ${item.veo_prompt}
+          </div>
 
-          <hr style="margin:10px 0; opacity:0.2;" />
+          <button class="copy-single-btn" data-text="${encodeURIComponent(item.veo_prompt)}">
+            Copy Prompt
+          </button>
 
-          <div class="scene-item"><b>Character:</b> ${global.character || "-"}</div>
-          <div class="scene-item"><b>Outfit:</b> ${global.outfit || "-"}</div>
-          <div class="scene-item"><b>Location:</b> ${global.location || "-"}</div>
-          <div class="scene-item"><b>Time:</b> ${global.time_of_day || "-"}</div>
-          <div class="scene-item"><b>Mood:</b> ${global.mood || "-"}</div>
-
-          <hr style="margin:10px 0; opacity:0.2;" />
-
-          <div class="scene-item"><b>Camera Variation:</b> ${scene.camera_variation || "-"}</div>
-          <div class="scene-item"><b>Visual Action:</b> ${scene.visual_action || "-"}</div>
-          <div class="scene-item"><b>Voice Over:</b> "${scene.voice_over || "-"}"</div>
-
-          ${scene.text_overlay ? `
-          <div class="scene-item"><b>Teks Overlay:</b> "${scene.text_overlay}"</div>` : ""}
         </div>
       `;
+
     });
 
     resultBox.innerHTML = html;
+
+    /* COPY PER PROMPT */
+    document.querySelectorAll(".copy-single-btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+
+        const text = decodeURIComponent(this.getAttribute("data-text"));
+
+        navigator.clipboard.writeText(text).then(() => {
+          this.textContent = "Copied!";
+          setTimeout(() => {
+            this.textContent = "Copy Prompt";
+          }, 1500);
+        });
+
+      });
+    });
+
   }
 
 });
