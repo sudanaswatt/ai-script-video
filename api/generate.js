@@ -1,6 +1,5 @@
 import { buildSystemPrompt } from "../lib/prompt.js";
 import { getGlobalStyle } from "../lib/styleEngine.js";
-import { getDurationConfig } from "../lib/durationEngine.js";
 import { compileResult } from "../lib/compiler.js";
 
 export default async function handler(req, res) {
@@ -13,9 +12,15 @@ export default async function handler(req, res) {
 
     const input = req.body;
 
-    const globalStyle = getGlobalStyle(input.style);
-    const durationConfig = getDurationConfig(input.sceneCount);
+    if (!input.product) {
+      return res.status(400).json({ error: "Produk wajib diisi" });
+    }
 
+    if (!input.promptCount || input.promptCount < 1 || input.promptCount > 4) {
+      return res.status(400).json({ error: "promptCount harus 1-4" });
+    }
+
+    const globalStyle = getGlobalStyle(input.style);
     const systemPrompt = buildSystemPrompt(input);
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -26,7 +31,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "openai/gpt-4o-mini",
-        temperature: 0.4, // 🔥 LEBIH STABIL
+        temperature: 0.4,
         messages: [
           {
             role: "system",
@@ -41,14 +46,13 @@ export default async function handler(req, res) {
     }
 
     const result = await response.json();
-
     let rawContent = result.choices?.[0]?.message?.content;
 
     if (!rawContent) {
       throw new Error("AI response kosong");
     }
 
-    // 🔥 Bersihkan jika AI masih kirim markdown
+    // Bersihkan markdown jika ada
     rawContent = rawContent
       .replace(/```json/g, "")
       .replace(/```/g, "")
@@ -63,10 +67,16 @@ export default async function handler(req, res) {
       throw new Error("Gagal parse JSON dari AI");
     }
 
+    // 🔥 Safety Overlay Lock (anti AI bandel)
+    if (!input.overlayEnabled && aiResult.scenes) {
+      aiResult.scenes.forEach(scene => {
+        scene.text_overlay = "";
+      });
+    }
+
     const finalResult = compileResult(
       aiResult,
-      globalStyle,
-      durationConfig
+      globalStyle
     );
 
     return res.status(200).json(finalResult);
