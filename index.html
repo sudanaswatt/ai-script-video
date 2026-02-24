@@ -16,7 +16,7 @@
   <div class="header">
     <div class="logo">🎬</div>
     <h1>AI SCRIPT VIDEO</h1>
-    <p>Buat Script Video AI Konsisten & Profesional</p>
+    <p>Buat Prompt Video AI 6 Detik Konsisten & Profesional</p>
   </div>
 
   <!-- FORM CARD -->
@@ -26,7 +26,7 @@
 
     <!-- 1 Upload -->
     <div class="form-group">
-      <label>1. Upload Referensi Gambar</label>
+      <label>1. Upload Referensi Gambar (Opsional)</label>
 
       <label class="upload-area">
         <input 
@@ -41,7 +41,7 @@
           <div class="upload-icon">🖼️</div>
           <div class="upload-title">Klik untuk pilih gambar</div>
           <div class="upload-subtitle">
-            Bisa pilih hingga 5 gambar sekaligus
+            Bisa pilih hingga 5 gambar
           </div>
         </div>
 
@@ -61,9 +61,9 @@
       <textarea id="advantage" placeholder="Contoh: Mengandung niacinamide 10%, cepat meresap..."></textarea>
     </div>
 
-    <!-- 4 Target Audience -->
+    <!-- 4 Karakter -->
     <div class="form-group">
-      <label>4. Karakter/Target Audience</label>
+      <label>4. Karakter / Target Audience</label>
       <select id="audience">
         <option value="Remaja">Remaja</option>
         <option value="Mahasiswa">Mahasiswa</option>
@@ -112,20 +112,19 @@
       </select>
     </div>
 
-    <!-- 8 Jumlah Scene -->
+    <!-- 8 Jumlah Prompt -->
     <div class="form-group">
-      <label>8. Jumlah Scene</label>
-
-      <div class="scene-control">
-        <input type="range" id="sceneCount" min="1" max="4" value="3" />
-        <div class="scene-display">
-          <span id="sceneNumber">3</span> Scene
-        </div>
-      </div>
+      <label>8. Jumlah Prompt (6 detik per prompt)</label>
+      <select id="promptCount">
+        <option value="1">1 Prompt</option>
+        <option value="2">2 Prompt</option>
+        <option value="3">3 Prompt</option>
+        <option value="4">4 Prompt</option>
+      </select>
     </div>
 
     <button class="generate-btn">
-      GENERATE SCRIPT OTOMATIS
+      GENERATE PROMPT
     </button>
 
   </div>
@@ -135,22 +134,18 @@
 
     <div class="result-header">
       <div class="result-title">
-        📄 Hasil Skrip Profesional
+        📄 Hasil Prompt Siap Kirim ke Veo / Kling
       </div>
-
-      <button id="copyButton" class="copy-btn">
-        Copy
-      </button>
     </div>
 
     <div id="resultBox" class="result-box">
       <div class="result-placeholder">
-        Silakan isi detail produk dan klik Generate.
+        Isi detail lalu klik Generate.
       </div>
     </div>
 
     <div class="info-box">
-      💡 Skrip ini fokus pada Visual dan Voice Over.
+      💡 Setiap prompt berdurasi 6 detik dan karakter konsisten di semua prompt.
     </div>
 
   </div>
