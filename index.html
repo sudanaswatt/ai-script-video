@@ -1,1 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Script Video</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">🎬</div>
+    <h1>AI SCRIPT VIDEO</h1>
+    <p>Buat Script Video AI Konsisten & Profesional</p>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="card">
+
+    <div class="section-title">⚙ Spesifikasi Konten</div>
+
+    <!-- 1 Upload -->
+   <div class="form-group">
+  <label>1. Upload Referensi Gambar</label>
+
+  <label class="upload-area">
+    <input type="file" id="imageUpload" accept="image/*" multiple />
+
+    <div id="uploadContent" class="upload-content">
+      <div class="upload-icon">🖼️</div>
+      <div class="upload-title">Klik / Drag & Drop di sini</div>
+      <div class="upload-subtitle">
+        Bisa pilih hingga 5 gambar sekaligus
+      </div>
+    </div>
+
+    <div id="previewContainer" class="preview-container hidden"></div>
+  </label>
+</div>
+    <!-- 2 Nama Produk -->
+    <div class="form-group">
+      <label>2. Nama Produk / Topik</label>
+      <input id="product" placeholder="Contoh: Serum Glowing" />
+    </div>
+
+    <!-- 3 Keunggulan -->
+    <div class="form-group">
+      <label>3. Keunggulan / Deskripsi</label>
+      <textarea id="advantage" placeholder="Contoh: Mengandung niacinamide 10%, cepat meresap..."></textarea>
+    </div>
+
+    <!-- 4 Target Audience -->
+    <div class="form-group">
+      <label>4. Target Audience</label>
+      <select id="audience">
+        <option value="Remaja">Remaja</option>
+        <option value="Mahasiswa">Mahasiswa</option>
+        <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>
+        <option value="Freelancer">Freelancer</option>
+        <option value="Pebisnis">Pebisnis</option>
+        <option value="General Audience">General Audience</option>
+      </select>
+    </div>
+
+    <!-- 5 Objek Visual -->
+    <div class="form-group">
+      <label>5. Objek Visual</label>
+      <input id="objectVisual" placeholder="Contoh: Botol serum transparan di meja aesthetic" />
+    </div>
+
+    <!-- 6 Element Script -->
+    <div class="form-group">
+      <label>6. Element Script</label>
+
+     <div class="element-card">
+
+  <div class="checkbox-item">
+    <input type="checkbox" id="voiceOver" checked disabled />
+    <label for="voiceOver">Voice Over (Wajib)</label>
+  </div>
+
+  <div class="checkbox-item">
+    <input type="checkbox" id="textOverlay" />
+    <label for="textOverlay">Teks Overlay (Opsional)</label>
+  </div>
+
+</div>
+
+    <!-- 7 Gaya Visual -->
+    <div class="form-group">
+      <label>7. Gaya Visual</label>
+      <select id="style">
+        <option value="Cinematic">Cinematic</option>
+        <option value="Luxury">Luxury</option>
+        <option value="Realistic">Realistic</option>
+        <option value="Clean Aesthetic">Clean Aesthetic</option>
+        <option value="Dark Dramatic">Dark Dramatic</option>
+        <option value="Bright Soft">Bright Soft</option>
+      </select>
+    </div>
+
+    <!-- Jumlah Scene -->
+    <div class="form-group">
+      <label>8. Jumlah Scene</label>
+
+      <div class="scene-control">
+        <input type="range" id="sceneCount" min="1" max="4" value="3" />
+        <div class="scene-display">
+          <span id="sceneNumber">3</span> Scene
+        </div>
+      </div>
+    </div>
+
+    <button class="generate-btn">
+      GENERATE SCRIPT OTOMATIS
+    </button>
+
+  </div>
+
+  <!-- RESULT CARD -->
+ <div class="card">
+
+  <div class="result-header">
+    <div class="result-title">
+      📄 Hasil Skrip Profesional
+    </div>
+
+    <button id="copyButton" class="copy-btn">
+      Copy
+    </button>
+  </div>
+
+  <div id="resultBox" class="result-box">
+    <div class="result-placeholder">
+      Silakan isi detail produk di samping dan klik Generate.
+      <br><br>
+      Hasil skrip dengan <b>Visual</b> dan <b>Voice Over</b> akan muncul di sini.
+    </div>
+  </div>
+
+  <div class="info-box">
+    💡 <b>Info:</b> Skrip ini fokus pada <b>Visual</b> dan 
+    <b>Voice Over</b>. Teks Overlay hanya muncul jika Anda mencentang opsinya.
+  </div>
+
+</div>
+
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
