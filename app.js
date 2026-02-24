@@ -6,73 +6,101 @@ document.addEventListener("DOMContentLoaded", function () {
   const sceneNumber = document.getElementById("sceneNumber");
   const upload = document.getElementById("imageUpload");
   const previewContainer = document.getElementById("previewContainer");
+  const uploadContent = document.getElementById("uploadContent");
   const copyButton = document.getElementById("copyButton");
+  const uploadArea = document.getElementById("uploadArea");
 
   let uploadedImages = [];
 
   /* ==============================
-     UPDATE SLIDER NUMBER
+     SAFE CHECK
   ============================== */
-  sceneSlider.addEventListener("input", function () {
-    sceneNumber.textContent = sceneSlider.value;
-  });
+  if (!button || !resultBox) return;
+
+  /* ==============================
+     SLIDER
+  ============================== */
+  if (sceneSlider && sceneNumber) {
+    sceneSlider.addEventListener("input", function () {
+      sceneNumber.textContent = sceneSlider.value;
+    });
+  }
+
+  /* ==============================
+     CLICK UPLOAD AREA
+  ============================== */
+  if (uploadArea && upload) {
+    uploadArea.addEventListener("click", function () {
+      upload.click();
+    });
+  }
 
   /* ==============================
      HANDLE IMAGE UPLOAD
   ============================== */
-  upload.addEventListener("change", function () {
+  if (upload) {
+    upload.addEventListener("change", function () {
 
-    uploadedImages = Array.from(upload.files).slice(0, 5);
-    const uploadContent = document.getElementById("uploadContent");
+      uploadedImages = Array.from(upload.files).slice(0, 5);
 
-    previewContainer.innerHTML = "";
+      if (previewContainer) previewContainer.innerHTML = "";
 
-    if (uploadedImages.length === 0) {
-      previewContainer.classList.add("hidden");
-      if (uploadContent) uploadContent.classList.remove("hidden");
-    } else {
-      previewContainer.classList.remove("hidden");
-      if (uploadContent) uploadContent.classList.add("hidden");
-    }
+      if (uploadedImages.length === 0) {
+        previewContainer?.classList.add("hidden");
+        uploadContent?.classList.remove("hidden");
+        return;
+      }
 
-    uploadedImages.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const img = document.createElement("img");
-        img.src = e.target.result;
-        previewContainer.appendChild(img);
-      };
-      reader.readAsDataURL(file);
+      previewContainer?.classList.remove("hidden");
+      uploadContent?.classList.add("hidden");
+
+      uploadedImages.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          img.classList.add("preview-img");
+          previewContainer?.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+
     });
-
-  });
+  }
 
   /* ==============================
      COPY BUTTON
   ============================== */
   if (copyButton) {
     copyButton.addEventListener("click", function () {
-      navigator.clipboard.writeText(resultBox.innerText).then(() => {
-        copyButton.textContent = "Copied!";
-        setTimeout(() => {
-          copyButton.textContent = "Copy";
-        }, 1500);
-      });
+
+      if (!resultBox.innerText.trim()) return;
+
+      navigator.clipboard.writeText(resultBox.innerText)
+        .then(() => {
+          copyButton.textContent = "Copied!";
+          setTimeout(() => {
+            copyButton.textContent = "Copy";
+          }, 1500);
+        })
+        .catch(() => {
+          alert("Gagal menyalin teks.");
+        });
     });
   }
 
   /* ==============================
-     GENERATE SCRIPT (CALL API)
+     GENERATE SCRIPT
   ============================== */
   button.addEventListener("click", async function () {
 
-    const product = document.getElementById("product").value.trim();
-    const advantage = document.getElementById("advantage").value.trim();
-    const audience = document.getElementById("audience").value;
-    const objectVisual = document.getElementById("objectVisual").value.trim();
-    const style = document.getElementById("style").value;
-    const totalScene = parseInt(sceneSlider.value);
-    const overlayEnabled = document.getElementById("textOverlay").checked;
+    const product = document.getElementById("product")?.value.trim();
+    const advantage = document.getElementById("advantage")?.value.trim();
+    const audience = document.getElementById("audience")?.value;
+    const objectVisual = document.getElementById("objectVisual")?.value.trim();
+    const style = document.getElementById("style")?.value;
+    const totalScene = parseInt(sceneSlider?.value || 3);
+    const overlayEnabled = document.getElementById("textOverlay")?.checked;
 
     if (!product) {
       alert("Nama produk wajib diisi.");
@@ -94,13 +122,13 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          style: style,
+          style,
           sceneCount: totalScene,
-          product: product,
-          advantage: advantage,
-          audience: audience,
-          objectVisual: objectVisual,
-          overlayEnabled: overlayEnabled
+          product,
+          advantage,
+          audience,
+          objectVisual,
+          overlayEnabled
         })
       });
 
@@ -113,6 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
       renderResult(data);
 
     } catch (error) {
+
+      console.error(error);
 
       resultBox.innerHTML = `
         <div class="result-placeholder">
@@ -132,44 +162,51 @@ document.addEventListener("DOMContentLoaded", function () {
   ============================== */
   function renderResult(data) {
 
-  let html = `
-    <div class="scene-block">
-      <div class="scene-title">GLOBAL CONTEXT</div>
-      <div class="scene-item"><b>Character:</b> ${data.global_context.character}</div>
-      <div class="scene-item"><b>Outfit:</b> ${data.global_context.outfit}</div>
-      <div class="scene-item"><b>Location:</b> ${data.global_context.location}</div>
-      <div class="scene-item"><b>Time:</b> ${data.global_context.time_of_day}</div>
-      <div class="scene-item"><b>Mood:</b> ${data.global_context.mood}</div>
-    </div>
-  `;
+    if (!data) return;
 
-  data.scenes.forEach(scene => {
+    const global = data.global_context || {};
+    const scenes = data.scenes || [];
 
-    html += `
+    let html = `
       <div class="scene-block">
-        <div class="scene-title">
-          SCENE ${scene.scene_number} (${scene.type})
-        </div>
-
-        <div class="scene-item">
-          <b>Camera:</b> ${scene.camera_variation}
-        </div>
-
-        <div class="scene-item">
-          <b>Visual:</b> ${scene.visual_action}
-        </div>
-
-        <div class="scene-item">
-          <b>Voice Over:</b> "${scene.voice_over}"
-        </div>
-
-        ${scene.text_overlay ? `
-        <div class="scene-item">
-          <b>Teks Overlay:</b> "${scene.text_overlay}"
-        </div>` : ""}
+        <div class="scene-title">GLOBAL CONTEXT</div>
+        <div class="scene-item"><b>Character:</b> ${global.character || "-"}</div>
+        <div class="scene-item"><b>Outfit:</b> ${global.outfit || "-"}</div>
+        <div class="scene-item"><b>Location:</b> ${global.location || "-"}</div>
+        <div class="scene-item"><b>Time:</b> ${global.time_of_day || "-"}</div>
+        <div class="scene-item"><b>Mood:</b> ${global.mood || "-"}</div>
       </div>
     `;
-  });
 
-  resultBox.innerHTML = html;
-}
+    scenes.forEach(scene => {
+
+      html += `
+        <div class="scene-block">
+          <div class="scene-title">
+            SCENE ${scene.scene_number} (${scene.type})
+          </div>
+
+          <div class="scene-item">
+            <b>Camera:</b> ${scene.camera_variation || "-"}
+          </div>
+
+          <div class="scene-item">
+            <b>Visual:</b> ${scene.visual_action || "-"}
+          </div>
+
+          <div class="scene-item">
+            <b>Voice Over:</b> "${scene.voice_over || "-"}"
+          </div>
+
+          ${scene.text_overlay ? `
+          <div class="scene-item">
+            <b>Teks Overlay:</b> "${scene.text_overlay}"
+          </div>` : ""}
+        </div>
+      `;
+    });
+
+    resultBox.innerHTML = html;
+  }
+
+});
