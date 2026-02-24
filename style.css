@@ -41,7 +41,27 @@ body {
   font-weight: 500;
   margin-top: 6px;
 }
+/* Header action button */
 
+.header-actions {
+  margin-top: 15px;
+}
+
+.secondary-btn {
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: 2px solid #134b3c;
+  background: white;
+  color: #134b3c;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: #134b3c;
+  color: white;
+}
 /* ==============================
    CARD
 ============================== */
