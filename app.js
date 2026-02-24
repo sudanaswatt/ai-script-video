@@ -66,44 +66,64 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ==============================
      GENERATE SCRIPT
   ============================== */
-  button.addEventListener("click", function () {
+  button.addEventListener("click", async function () {
 
-    const product = document.getElementById("product").value.trim();
-    const advantage = document.getElementById("advantage").value.trim();
-    const audience = document.getElementById("audience").value;
-    const objectVisual = document.getElementById("objectVisual").value.trim();
-    const style = document.getElementById("style").value;
-    const totalScene = parseInt(sceneSlider.value);
-    const overlayEnabled = document.getElementById("textOverlay").checked;
+  const product = document.getElementById("product").value.trim();
+  const advantage = document.getElementById("advantage").value.trim();
+  const audience = document.getElementById("audience").value;
+  const objectVisual = document.getElementById("objectVisual").value.trim();
+  const style = document.getElementById("style").value;
+  const totalScene = parseInt(sceneSlider.value);
+  const overlayEnabled = document.getElementById("textOverlay").checked;
 
-    if (!product) {
-      alert("Nama produk wajib diisi.");
-      return;
-    }
+  if (!product) {
+    alert("Nama produk wajib diisi.");
+    return;
+  }
 
-    button.textContent = "Generating...";
-    button.disabled = true;
+  button.textContent = "Generating...";
+  button.disabled = true;
+
+  resultBox.innerHTML = `
+    <div class="result-placeholder">
+      Menghubungkan ke AI engine...
+    </div>
+  `;
+
+  try {
+
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        style: style,
+        sceneCount: totalScene,
+        product: product,
+        advantage: advantage,
+        audience: audience,
+        objectVisual: objectVisual,
+        overlayEnabled: overlayEnabled
+      })
+    });
+
+    const data = await response.json();
+
+    renderResult(data);
+
+  } catch (error) {
 
     resultBox.innerHTML = `
       <div class="result-placeholder">
-        Menyusun script profesional...
+        Terjadi error koneksi ke server.
       </div>
     `;
 
-    setTimeout(() => {
+  }
 
-      let html = "";
-      const durationPerScene = TOTAL_DURATION / totalScene;
+  button.textContent = "GENERATE SCRIPT OTOMATIS";
+  button.disabled = false;
 
-      for (let i = 1; i <= totalScene; i++) {
-
-        let type = "";
-        let visual = "";
-        let voice = "";
-        let overlay = "";
-
-        const hasImage = uploadedImages[i - 1] !== undefined;
-
+});
         /* SCENE TYPE */
         if (i === 1) type = "HOOK";
         else if (i === totalScene) type = "CTA";
