@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Script Video</title>
+  <title>AI Campaign Prompt Builder</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
@@ -15,93 +15,49 @@
   <!-- HEADER -->
   <div class="header">
     <div class="logo">🎬</div>
-    <h1>AI SCRIPT VIDEO</h1>
-    <p>Buat Prompt Video AI 6 Detik Konsisten & Profesional</p>
+    <h1>AI CAMPAIGN PROMPT BUILDER</h1>
+    <p>Buat Karakter Sekali, Gunakan untuk Banyak Video</p>
   </div>
 
-  <!-- FORM CARD -->
+  <!-- FORM -->
   <div class="card">
 
     <div class="section-title">⚙ Spesifikasi Konten</div>
 
-    <!-- 1 Upload -->
+    <!-- Produk -->
     <div class="form-group">
-      <label>1. Upload Referensi Gambar (Opsional)</label>
-
-      <label class="upload-area">
-        <input 
-          type="file" 
-          id="imageUpload" 
-          accept="image/*" 
-          multiple 
-          hidden
-        />
-
-        <div id="uploadContent" class="upload-content">
-          <div class="upload-icon">🖼️</div>
-          <div class="upload-title">Klik untuk pilih gambar</div>
-          <div class="upload-subtitle">
-            Bisa pilih hingga 5 gambar
-          </div>
-        </div>
-
-        <div id="previewContainer" class="preview-container hidden"></div>
-      </label>
-    </div>
-
-    <!-- 2 Nama Produk -->
-    <div class="form-group">
-      <label>2. Nama Produk / Topik</label>
+      <label>1. Nama Produk / Topik</label>
       <input id="product" placeholder="Contoh: Serum Glowing" />
     </div>
 
-    <!-- 3 Keunggulan -->
+    <!-- Keunggulan -->
     <div class="form-group">
-      <label>3. Keunggulan / Deskripsi</label>
+      <label>2. Keunggulan / Deskripsi</label>
       <textarea id="advantage" placeholder="Contoh: Mengandung niacinamide 10%, cepat meresap..."></textarea>
     </div>
 
-    <!-- 4 Karakter -->
+    <!-- Karakter -->
     <div class="form-group">
-      <label>4. Karakter / Target Audience</label>
+      <label>3. Karakter</label>
       <select id="audience">
-  <option value="Pria Remaja">Pria Remaja</option>
-  <option value="Wanita Remaja">Wanita Remaja</option>
-  <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>
-  <option value="Pria Dewasa">Pria Dewasa</option>
-  <option value="Orang Tua">Orang Tua</option>
-  <option value="Anak Anak">Anak Anak</option>
-</select>
+        <option value="Pria Remaja">Pria Remaja</option>
+        <option value="Wanita Remaja">Wanita Remaja</option>
+        <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>
+        <option value="Pria Dewasa">Pria Dewasa</option>
+        <option value="Orang Tua">Orang Tua</option>
+        <option value="Anak Anak">Anak Anak</option>
+      </select>
     </div>
 
-    <!-- 5 Objek Visual -->
+    <!-- Objek Visual -->
     <div class="form-group">
-      <label>5. object visual / lokasi</label>
-      <input id="objectVisual" placeholder="Contoh: botol/kamar," />
+      <label>4. Objek Visual / Lokasi</label>
+      <input id="objectVisual" placeholder="Contoh: kamar aesthetic, meja kayu, taman sore hari" />
     </div>
 
-    <!-- 6 Element Script -->
+    <!-- Style -->
     <div class="form-group">
-      <label>6. Element Script</label>
-
-      <div class="element-card">
-
-        <div class="checkbox-item">
-          <input type="checkbox" id="voiceOver" checked disabled />
-          <label for="voiceOver">Voice Over (Wajib)</label>
-        </div>
-
-        <div class="checkbox-item">
-          <input type="checkbox" id="textOverlay" />
-          <label for="textOverlay">Teks Overlay (Opsional)</label>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- 7 Gaya Visual -->
-    <div class="form-group">
-      <label>7. Gaya Visual</label>
+      <label>5. Gaya Visual</label>
       <select id="style">
         <option value="Cinematic">Cinematic</option>
         <option value="Luxury">Luxury</option>
@@ -112,9 +68,9 @@
       </select>
     </div>
 
-    <!-- 8 Jumlah Prompt -->
+    <!-- Jumlah Prompt -->
     <div class="form-group">
-      <label>8. Jumlah Prompt (6 detik per prompt)</label>
+      <label>6. Jumlah Prompt (6 detik per prompt)</label>
       <select id="promptCount">
         <option value="1">1 Prompt</option>
         <option value="2">2 Prompt</option>
@@ -124,17 +80,17 @@
     </div>
 
     <button class="generate-btn">
-      GENERATE PROMPT
+      GENERATE CAMPAIGN PROMPT
     </button>
 
   </div>
 
-  <!-- RESULT CARD -->
+  <!-- RESULT -->
   <div class="card">
 
     <div class="result-header">
       <div class="result-title">
-        📄 Hasil Prompt profesional siap pakai🔥
+        📄 Campaign Prompt Output
       </div>
     </div>
 
@@ -145,7 +101,8 @@
     </div>
 
     <div class="info-box">
-      💡 Setiap prompt berdurasi 6 detik dan karakter konsisten di semua prompt.
+      🔥 STEP 1: Copy GLOBAL IMAGE PROMPT → Generate gambar di GPT Image.  
+      🔥 STEP 2: Upload gambar tersebut ke Veo/Kling → Gunakan VIDEO PROMPT.
     </div>
 
   </div>
