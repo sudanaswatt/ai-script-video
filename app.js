@@ -132,33 +132,44 @@ document.addEventListener("DOMContentLoaded", function () {
   ============================== */
   function renderResult(data) {
 
-    let html = "";
+  let html = `
+    <div class="scene-block">
+      <div class="scene-title">GLOBAL CONTEXT</div>
+      <div class="scene-item"><b>Character:</b> ${data.global_context.character}</div>
+      <div class="scene-item"><b>Outfit:</b> ${data.global_context.outfit}</div>
+      <div class="scene-item"><b>Location:</b> ${data.global_context.location}</div>
+      <div class="scene-item"><b>Time:</b> ${data.global_context.time_of_day}</div>
+      <div class="scene-item"><b>Mood:</b> ${data.global_context.mood}</div>
+    </div>
+  `;
 
-    data.scenes.forEach(scene => {
+  data.scenes.forEach(scene => {
 
-      html += `
-        <div class="scene-block">
-          <div class="scene-title">
-            SCENE ${scene.scene_number} (${scene.type})
-          </div>
-
-          <div class="scene-item">
-            <b>Visual:</b> ${scene.visual_action}
-          </div>
-
-          <div class="scene-item">
-            <b>Voice Over:</b> "${scene.voice_over}"
-          </div>
-
-          ${scene.text_overlay ? `
-          <div class="scene-item">
-            <b>Teks Overlay:</b> "${scene.text_overlay}"
-          </div>` : ""}
+    html += `
+      <div class="scene-block">
+        <div class="scene-title">
+          SCENE ${scene.scene_number} (${scene.type})
         </div>
-      `;
-    });
 
-    resultBox.innerHTML = html;
-  }
+        <div class="scene-item">
+          <b>Camera:</b> ${scene.camera_variation}
+        </div>
 
-});
+        <div class="scene-item">
+          <b>Visual:</b> ${scene.visual_action}
+        </div>
+
+        <div class="scene-item">
+          <b>Voice Over:</b> "${scene.voice_over}"
+        </div>
+
+        ${scene.text_overlay ? `
+        <div class="scene-item">
+          <b>Teks Overlay:</b> "${scene.text_overlay}"
+        </div>` : ""}
+      </div>
+    `;
+  });
+
+  resultBox.innerHTML = html;
+}
