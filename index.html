@@ -30,19 +30,16 @@
 
     <div class="section-title">⚙ Spesifikasi Konten</div>
 
-    <!-- Produk -->
     <div class="form-group">
       <label>1. Nama Produk / Topik</label>
       <input id="product" placeholder="Contoh: Kaos Cooling Premium" />
     </div>
 
-    <!-- Keunggulan -->
     <div class="form-group">
       <label>2. Keunggulan / Deskripsi Produk</label>
       <textarea id="advantage" placeholder="Contoh: Adem, menyerap keringat, nyaman dipakai seharian..."></textarea>
     </div>
 
-    <!-- Karakter -->
     <div class="form-group">
       <label>3. Karakter Utama</label>
       <select id="audience">
@@ -55,13 +52,11 @@
       </select>
     </div>
 
-    <!-- Lokasi -->
     <div class="form-group">
       <label>4. Lokasi / Environment (Akan Dikunci)</label>
       <input id="objectVisual" placeholder="Contoh: kamar minimalis dengan jendela besar dan cahaya sore hangat" />
     </div>
 
-    <!-- Style -->
     <div class="form-group">
       <label>5. Gaya Visual Campaign</label>
       <select id="style">
@@ -74,7 +69,6 @@
       </select>
     </div>
 
-    <!-- Jumlah Prompt -->
     <div class="form-group">
       <label>6. Jumlah Video Prompt (6 detik per video)</label>
       <select id="promptCount">
@@ -111,6 +105,27 @@
       <br><br>
       🔥 STEP 2: Upload gambar tersebut ke Veo / Kling → Gunakan <b>VIDEO PROMPT</b> untuk tiap adegan 6 detik.
     </div>
+
+  </div>
+
+  <!-- HISTORY -->
+  <div class="card">
+
+    <div class="result-header">
+      <div class="result-title">
+        📜 Riwayat Generate
+      </div>
+    </div>
+
+    <div id="historyContainer" class="result-box">
+      <div class="result-placeholder">
+        Belum ada riwayat generate.
+      </div>
+    </div>
+
+    <button id="clearHistoryBtn" class="secondary-btn" style="margin-top:15px;">
+      Hapus Semua Riwayat
+    </button>
 
   </div>
 
