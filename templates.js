@@ -3,6 +3,19 @@ import { templateLibrary } from "./lib/templateData.js";
 const select = document.getElementById("templateCategory");
 const container = document.getElementById("templateContainer");
 
+/* ==============================
+   ISI DROPDOWN OTOMATIS
+============================== */
+Object.keys(templateLibrary).forEach(key => {
+  const option = document.createElement("option");
+  option.value = key;
+  option.textContent = templateLibrary[key].label;
+  select.appendChild(option);
+});
+
+/* ==============================
+   RENDER TEMPLATE
+============================== */
 function renderTemplates(category) {
 
   container.innerHTML = "";
@@ -12,7 +25,7 @@ function renderTemplates(category) {
 
   categoryData.templates.forEach((template, index) => {
 
-    const shortText = template.prompt.split("\n")[0]; // tampilkan baris pertama saja
+    const shortText = template.prompt.split("\n")[0];
 
     container.innerHTML += `
       <div class="card template-card">
@@ -26,7 +39,7 @@ function renderTemplates(category) {
         </div>
 
         <div class="template-full hidden" id="full-${index}">
-<pre>${template.prompt}</pre>
+          <pre>${template.prompt}</pre>
         </div>
 
         <div class="template-actions">
@@ -44,12 +57,11 @@ function renderTemplates(category) {
     `;
   });
 
-  // Toggle detail
+  /* Toggle */
   document.querySelectorAll(".toggle-btn").forEach(btn => {
     btn.addEventListener("click", function () {
       const id = this.dataset.id;
       const full = document.getElementById(`full-${id}`);
-
       full.classList.toggle("hidden");
 
       this.textContent = full.classList.contains("hidden")
@@ -58,10 +70,9 @@ function renderTemplates(category) {
     });
   });
 
-  // Copy prompt
+  /* Copy */
   document.querySelectorAll(".copy-btn").forEach(btn => {
     btn.addEventListener("click", function () {
-
       const text = decodeURIComponent(this.dataset.copy);
       navigator.clipboard.writeText(text);
 
@@ -69,15 +80,15 @@ function renderTemplates(category) {
       setTimeout(() => {
         this.textContent = "Copy Prompt";
       }, 1500);
-
     });
   });
 }
 
-// Change category
+/* ==============================
+   INITIAL LOAD
+============================== */
+renderTemplates(Object.keys(templateLibrary)[0]);
+
 select.addEventListener("change", () => {
   renderTemplates(select.value);
 });
-
-// Initial render
-renderTemplates(select.value);
