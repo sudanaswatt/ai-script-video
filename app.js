@@ -160,62 +160,78 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderHistory() {
 
-    if (!historyContainer) return;
+  if (!historyContainer) return;
 
-    const history = JSON.parse(localStorage.getItem("generateHistory")) || [];
+  const history = JSON.parse(localStorage.getItem("generateHistory")) || [];
 
-    if (history.length === 0) {
-      historyContainer.innerHTML = `
-        <div class="result-placeholder">
-          Belum ada riwayat generate.
-        </div>
-      `;
-      return;
-    }
-
-    historyContainer.innerHTML = "";
-
-    history.forEach((item, index) => {
-
-      historyContainer.innerHTML += `
-        <div class="scene-block">
-
-          <div class="scene-title">
-            Generate ${index + 1}
-          </div>
-
-          <div class="scene-item">
-            ${item.date}
-          </div>
-
-          <button class="secondary-btn toggle-history-btn" data-index="${index}">
-            Lihat Detail
-          </button>
-
-          <div class="history-detail hidden" id="history-${index}">
-            <hr style="margin:15px 0; opacity:0.2;" />
-            <pre class="prompt-text">${escapeHTML(item.data.image_prompt)}</pre>
-          </div>
-
-        </div>
-      `;
-    });
-
-    document.querySelectorAll(".toggle-history-btn").forEach(btn => {
-      btn.addEventListener("click", function () {
-
-        const index = this.dataset.index;
-        const detail = document.getElementById(`history-${index}`);
-
-        detail.classList.toggle("hidden");
-
-        this.textContent = detail.classList.contains("hidden")
-          ? "Lihat Detail"
-          : "Tutup";
-
-      });
-    });
+  if (history.length === 0) {
+    historyContainer.innerHTML = `
+      <div class="result-placeholder">
+        Belum ada riwayat generate.
+      </div>
+    `;
+    return;
   }
+
+  historyContainer.innerHTML = "";
+
+  history.forEach((item, index) => {
+
+    let fullContent = `
+🖼 GLOBAL IMAGE PROMPT
+
+${item.data.image_prompt}
+
+`;
+
+    item.data.prompts.forEach(p => {
+      fullContent += `
+🎬 VIDEO PROMPT ${p.prompt_number}
+
+${p.veo_prompt}
+
+`;
+    });
+
+    historyContainer.innerHTML += `
+      <div class="scene-block history-card">
+
+        <div class="scene-title">
+          Generate ${index + 1}
+        </div>
+
+        <div class="scene-item">
+          ${item.date}
+        </div>
+
+        <button class="secondary-btn toggle-history-btn" data-index="${index}">
+          Lihat Detail
+        </button>
+
+        <div class="history-detail hidden" id="history-${index}">
+          <hr style="margin:15px 0; opacity:0.2;" />
+          <pre class="prompt-text">${escapeHTML(fullContent)}</pre>
+        </div>
+
+      </div>
+    `;
+  });
+
+  document.querySelectorAll(".toggle-history-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+
+      const index = this.dataset.index;
+      const detail = document.getElementById(`history-${index}`);
+
+      detail.classList.toggle("hidden");
+
+      this.textContent = detail.classList.contains("hidden")
+        ? "Lihat Detail"
+        : "Tutup";
+
+    });
+  });
+}
 
   if (clearHistoryBtn) {
     clearHistoryBtn.addEventListener("click", function () {
