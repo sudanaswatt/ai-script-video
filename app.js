@@ -3,14 +3,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const button = document.querySelector(".generate-btn");
   const resultBox = document.getElementById("resultBox");
   const templateBtn = document.getElementById("openTemplateLibrary");
+  const historyContainer = document.getElementById("historyContainer");
+  const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
-if (templateBtn) {
-  templateBtn.addEventListener("click", function () {
-    window.location.href = "templates.html";
-  });
-}
+  /* TEMPLATE BUTTON */
+  if (templateBtn) {
+    templateBtn.addEventListener("click", function () {
+      window.location.href = "templates.html";
+    });
+  }
+
   if (!button || !resultBox) return;
 
+  /* ==============================
+     GENERATE BUTTON
+  ============================== */
   button.addEventListener("click", async function () {
 
     const product = document.getElementById("product")?.value.trim();
@@ -49,9 +56,7 @@ if (templateBtn) {
         })
       });
 
-      if (!response.ok) {
-        throw new Error("Server error");
-      }
+      if (!response.ok) throw new Error("Server error");
 
       const data = await response.json();
 
@@ -60,6 +65,8 @@ if (templateBtn) {
       }
 
       renderResult(data);
+      saveToHistory(data);
+      renderHistory();
 
     } catch (error) {
 
@@ -80,12 +87,10 @@ if (templateBtn) {
   /* ==============================
      RENDER RESULT
   ============================== */
-
   function renderResult(data) {
 
     let html = "";
 
-    /* IMAGE PROMPT */
     html += `
       <div class="scene-block">
         <div class="scene-title">
@@ -98,9 +103,7 @@ if (templateBtn) {
       </div>
     `;
 
-    /* VIDEO PROMPTS */
     data.prompts.forEach(p => {
-
       html += `
         <div class="scene-block">
           <div class="scene-title">
@@ -116,28 +119,110 @@ if (templateBtn) {
 
     resultBox.innerHTML = html;
 
-    /* COPY HANDLER */
     document.querySelectorAll(".copy-btn").forEach(btn => {
       btn.addEventListener("click", function () {
 
-        const text = decodeURIComponent(this.getAttribute("data-copy"));
+        const text = decodeURIComponent(this.dataset.copy);
 
         navigator.clipboard.writeText(text).then(() => {
-          const originalText = this.textContent;
+          const original = this.textContent;
           this.textContent = "Copied!";
           setTimeout(() => {
-            this.textContent = originalText;
+            this.textContent = original;
           }, 1500);
         });
 
       });
     });
-
   }
 
   /* ==============================
-     ESCAPE HTML (ANTI BUG)
+     HISTORY SYSTEM
   ============================== */
+
+  function saveToHistory(data) {
+
+    const history = JSON.parse(localStorage.getItem("generateHistory")) || [];
+
+    const newItem = {
+      date: new Date().toLocaleString(),
+      data: data
+    };
+
+    history.unshift(newItem);
+
+    if (history.length > 20) {
+      history.pop();
+    }
+
+    localStorage.setItem("generateHistory", JSON.stringify(history));
+  }
+
+  function renderHistory() {
+
+    if (!historyContainer) return;
+
+    const history = JSON.parse(localStorage.getItem("generateHistory")) || [];
+
+    if (history.length === 0) {
+      historyContainer.innerHTML = `
+        <div class="result-placeholder">
+          Belum ada riwayat generate.
+        </div>
+      `;
+      return;
+    }
+
+    historyContainer.innerHTML = "";
+
+    history.forEach((item, index) => {
+
+      historyContainer.innerHTML += `
+        <div class="scene-block">
+
+          <div class="scene-title">
+            Generate ${index + 1}
+          </div>
+
+          <div class="scene-item">
+            ${item.date}
+          </div>
+
+          <button class="secondary-btn toggle-history-btn" data-index="${index}">
+            Lihat Detail
+          </button>
+
+          <div class="history-detail hidden" id="history-${index}">
+            <hr style="margin:15px 0; opacity:0.2;" />
+            <pre class="prompt-text">${escapeHTML(item.data.image_prompt)}</pre>
+          </div>
+
+        </div>
+      `;
+    });
+
+    document.querySelectorAll(".toggle-history-btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+
+        const index = this.dataset.index;
+        const detail = document.getElementById(`history-${index}`);
+
+        detail.classList.toggle("hidden");
+
+        this.textContent = detail.classList.contains("hidden")
+          ? "Lihat Detail"
+          : "Tutup";
+
+      });
+    });
+  }
+
+  if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener("click", function () {
+      localStorage.removeItem("generateHistory");
+      renderHistory();
+    });
+  }
 
   function escapeHTML(str) {
     return str
@@ -145,5 +230,7 @@ if (templateBtn) {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   }
+
+  renderHistory();
 
 });
