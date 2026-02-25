@@ -25,8 +25,6 @@ function renderTemplates(category) {
 
   categoryData.templates.forEach((template, index) => {
 
-    const shortText = template.prompt.split("\n")[0];
-
     container.innerHTML += `
       <div class="card template-card">
 
@@ -34,45 +32,59 @@ function renderTemplates(category) {
           ${template.title}
         </div>
 
+        <!-- PREVIEW -->
         <div class="template-preview">
-          ${shortText}...
+          ${template.prompt.split("\n")[0]}...
         </div>
 
-        <div class="template-full hidden" id="full-${index}">
+        <!-- FULL (DEFAULT HIDDEN) -->
+        <div class="template-full" id="full-${index}" style="display:none;">
           <pre>${template.prompt}</pre>
         </div>
 
         <div class="template-actions">
+
           <button class="secondary-btn toggle-btn" data-id="${index}">
             Lihat Detail
           </button>
 
-          <button class="generate-btn copy-btn" 
-                  data-copy="${encodeURIComponent(template.prompt)}">
+          <button class="generate-btn copy-btn"
+            data-copy="${encodeURIComponent(template.prompt)}">
             Copy Prompt
           </button>
+
         </div>
 
       </div>
     `;
   });
 
-  /* Toggle */
+  /* ==============================
+     TOGGLE DETAIL
+  ============================== */
   document.querySelectorAll(".toggle-btn").forEach(btn => {
     btn.addEventListener("click", function () {
+
       const id = this.dataset.id;
       const full = document.getElementById(`full-${id}`);
-      full.classList.toggle("hidden");
 
-      this.textContent = full.classList.contains("hidden")
-        ? "Lihat Detail"
-        : "Tutup";
+      if (full.style.display === "none") {
+        full.style.display = "block";
+        this.textContent = "Tutup";
+      } else {
+        full.style.display = "none";
+        this.textContent = "Lihat Detail";
+      }
+
     });
   });
 
-  /* Copy */
+  /* ==============================
+     COPY PROMPT
+  ============================== */
   document.querySelectorAll(".copy-btn").forEach(btn => {
     btn.addEventListener("click", function () {
+
       const text = decodeURIComponent(this.dataset.copy);
       navigator.clipboard.writeText(text);
 
@@ -80,6 +92,7 @@ function renderTemplates(category) {
       setTimeout(() => {
         this.textContent = "Copy Prompt";
       }, 1500);
+
     });
   });
 }
