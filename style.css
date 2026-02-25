@@ -308,3 +308,11 @@ textarea::placeholder {
   gap: 10px;
   flex-wrap: wrap;
 }
+.history-detail {
+  margin-top: 10px;
+}
+
+.history-detail pre {
+  max-height: 200px;
+  overflow-y: auto;
+}
